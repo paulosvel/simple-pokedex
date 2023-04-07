@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { Box, Button } from "@mui/material";
+import "./App.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+async function getPikachu(){
+  const response = await axios.get('https://pokeapi.co/api/v2/pokemon/pikachu')
+    setPokemon(response);
+    console.log(response);
+  }-
+  useEffect (() => {
+  getPikachu();
+  }
   );
+  const [pokemon, setPokemon] = useState([]);
+
+
+
+  return (
+    <>
+      {pokemon&&
+      pokemon.map((item)=>{
+        item.data.map((item)=>{
+          return(
+            <Box>
+              {item.name}
+            </Box>
+          )
+        })
+      })}
+    </>
+  );
+
 }
 
 export default App;
