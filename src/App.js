@@ -9,10 +9,12 @@ import ReactPaginate from "react-paginate";
 function App() {
   const [pokemon, setPokemon] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pokemonPerPage, setPokemonPerPage] = useState(10);
+  const [pokemonPerPage, setPokemonPerPage] = useState(25);
 
   async function getPokemons() {
-    const response = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=2000");
+    const response = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon?limit=2000"
+    );
     setPokemon(response.data.results);
     console.log(response.data.results);
   }
@@ -35,31 +37,66 @@ function App() {
 
   return (
     <>
-      {currentPokemon &&
-        currentPokemon.map((item) => {
-          const pokemonId = item.url.split("/")[6];
-          return (
-            <>
-              <Box key={item.name}>{item.name}</Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          flexDirection: "row",
+          flexWrap: "wrap",
+        }}
+      >
+        {currentPokemon &&
+          currentPokemon.map((item) => {
+            const pokemonId = item.url.split("/")[6];
+            return (
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "20%",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Box>
+                    <img
+                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`}
+                    ></img>
+                  </Box>
+                  <Box
+                    sx={{ fontFamily: "Cursive", fontWeight: "500" }}
+                    key={item.name}
+                  >
+                    {item.name}
+                  </Box>
+                </Box>
+              </>
+            );
+          })}{" "}
+        {/*mapping end */}
+      </Box>
 
-              <Box>
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`}
-                ></img>
-              </Box>
-            </>
-          );
-        })}
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          paddingTop: "50px",
+        }}
+      >
         <Button
+          sx={{ width: "100px" }}
           variant="contained"
           disabled={currentPage === 1}
           onClick={handlePreviousClick}
         >
           Previous
         </Button>
-        <Box sx={{ width: "20px" }}></Box>
+        <Box sx={{ width: "10px" }}></Box>
         <Button
+          sx={{ width: "100px" }}
           variant="contained"
           disabled={currentPokemon.length < pokemonPerPage}
           onClick={handleNextClick}
