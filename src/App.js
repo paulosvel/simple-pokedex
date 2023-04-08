@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import "./App.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import ReactPaginate from "react-paginate";
 
 function App() {
   const [pokemon, setPokemon] = useState([]);
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pokemonPerPage, setPokemonPerPage] = useState(25);
 
@@ -33,10 +34,31 @@ function App() {
 
   const indexOfLastPokemon = currentPage * pokemonPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonPerPage;
-  const currentPokemon = pokemon.slice(indexOfFirstPokemon, indexOfLastPokemon);
+
+  const filteredPokemon = pokemon.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const currentPokemon = filteredPokemon.slice(
+    indexOfFirstPokemon,
+    indexOfLastPokemon
+  );
+
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+    setCurrentPage(1);
+  };
 
   return (
     <>
+    <Box sx={{display: "flex", justifyContent: "center", paddingBottom:"10px", paddingTop:"10px"}}>
+      <TextField
+        placeholder="Search"
+        sx={{  width:"20%"}}
+        value={search}
+        onChange={handleChange}
+      />
+      </Box>
       <Box
         sx={{
           display: "flex",
